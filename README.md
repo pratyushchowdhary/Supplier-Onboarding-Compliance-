@@ -21,3 +21,9 @@ npm run dev
 - Local draft persistence
 
 The current release is a frontend MVP. Authentication, database persistence, object storage, document processing, and compliance workflow APIs are the next backend phase.
+
+## Website
+
+The application is deployed with GitHub Pages at:
+
+https://pratyushchowdhary.github.io/Supplier-Onboarding-Compliance-/
