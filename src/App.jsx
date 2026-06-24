@@ -2,8 +2,21 @@ import { useEffect, useMemo, useState } from "react";
 import { WorkspaceShell, PublicShell } from "./components/AppShell.jsx";
 import { Button, Card, Field, SectionHeading, StatusBadge } from "./components/UI.jsx";
 import { initialState, steps } from "./data/initialState.js";
+import itcLogo from "./assets/brands/itc.png";
+import nikeLogo from "./assets/brands/nike.png";
+import pgLogo from "./assets/brands/pg.png";
+import nestleLogo from "./assets/brands/nestle.png";
+import unileverLogo from "./assets/brands/unilever.png";
 
-const STORAGE_KEY = "nourishco-supplier-draft";
+const STORAGE_KEY = "supply-now-supplier-draft";
+
+const partnerBrands = [
+  { name: "ITC Limited", shortName: "ITC", logo: itcLogo },
+  { name: "Nike", logo: nikeLogo },
+  { name: "Procter & Gamble", shortName: "P&G", logo: pgLogo },
+  { name: "Nestlé", logo: nestleLogo },
+  { name: "Unilever", logo: unileverLogo },
+];
 
 function Welcome({ onStart }) {
   return (
@@ -11,18 +24,21 @@ function Welcome({ onStart }) {
       <section className="welcome">
         <div className="welcome__copy">
           <p className="eyebrow">Supplier onboarding</p>
-          <h1>Bring your business to NourishCo</h1>
-          <p>Create one supplier profile, apply across NourishCo brands, and track your compliance status in one place.</p>
+          <h1>Bring your business to Supply NOW</h1>
+          <p>Create one supplier profile, apply across Supply NOW partner brands, and track your compliance status in one place.</p>
           <div className="welcome__actions welcome__choice-grid">
-            <div><h2>New here?</h2><p>Begin your journey as a NourishCo supplier.</p><Button onClick={onStart}>Start application</Button></div>
+            <div><h2>New here?</h2><p>Begin your journey as a Supply NOW supplier.</p><Button onClick={onStart}>Start application</Button></div>
             <div><h2>Existing Suppliers</h2><p>Pick up where you left off or manage your profile.</p><Button variant="secondary" onClick={onStart}>Login</Button></div>
           </div>
           <div className="welcome__help"><p className="eyebrow">We&apos;ll help with:</p><div><span>⌁ Extracting business details</span><span>⊘ Finding expired documents</span><span>⌖ Checking address mismatches</span><span>✓ Compliance review summary</span></div></div>
         </div>
         <div className="welcome__panel">
           <h2>Brand Family</h2>
-          <p>One partnership, five global brands. Your supplier profile unlocks opportunities across the entire NourishCo ecosystem.</p>
-          <div className="brand-ecosystem"><span className="ecosystem-core">NourishCo</span><span>PureSip</span><span>Harvest Bites</span><span>DailyGlow</span><span>QuickEats</span><span>EcoPack</span></div>
+          <p>One supplier profile, five global companies. Use verified information across the Supply NOW partner ecosystem.</p>
+          <div className="brand-ecosystem">
+            <span className="ecosystem-core">Supply NOW</span>
+            {partnerBrands.map((brand) => <span className="partner-brand" key={brand.name}><img src={brand.logo} alt={`${brand.name} logo`} /></span>)}
+          </div>
         </div>
       </section>
     </PublicShell>
@@ -86,7 +102,7 @@ function Review({ data, updateSection, back, onSubmit, submitted }) {
       <SectionHeading title="Review & Submit" description="Review and submit your application for the selected raw material." />
       <div className="readiness-grid"><Card><StatusBadge status="Ready" /><h2>Business information</h2><p>{data.business.legalName}<br />{data.business.country}</p></Card><Card><StatusBadge status="Ready" /><h2>Supply details</h2><p>{data.supply.botanicalName}<br />{data.supply.grade}</p></Card><Card className={pending.length ? "card--attention" : ""}><StatusBadge status={pending.length ? "Action needed" : "Ready"} /><h2>Documents</h2><p>{pending.length ? `${pending.length} unresolved requirements` : "All documents supplied"}</p></Card></div>
       {pending.length > 0 && <Card className="pending-list"><h2>Pending actions</h2>{pending.map((doc) => <div key={doc.id}><span>!</span><strong>{doc.name}</strong><small>{doc.status}</small></div>)}</Card>}
-      <Card className="form-card"><h2>Supplier declaration</h2><p className="muted">I confirm that the information supplied is complete and accurate, and I am authorized to submit it for this business.</p><div className="form-grid"><Field label="Full name" value={data.declaration.fullName} onChange={(e) => updateSection("declaration", "fullName", e.target.value)} placeholder="Enter full name" /><Field label="Place" value={data.declaration.place} onChange={(e) => updateSection("declaration", "place", e.target.value)} placeholder="Enter city" /></div><label className="checkbox"><input type="checkbox" checked={data.declaration.accepted} onChange={(e) => updateSection("declaration", "accepted", e.target.checked)} /><span>I agree to the NourishCo Terms of Service and Raw Material Quality Standards.</span></label></Card>
+      <Card className="form-card"><h2>Supplier declaration</h2><p className="muted">I confirm that the information supplied is complete and accurate, and I am authorized to submit it for this business.</p><div className="form-grid"><Field label="Full name" value={data.declaration.fullName} onChange={(e) => updateSection("declaration", "fullName", e.target.value)} placeholder="Enter full name" /><Field label="Place" value={data.declaration.place} onChange={(e) => updateSection("declaration", "place", e.target.value)} placeholder="Enter city" /></div><label className="checkbox"><input type="checkbox" checked={data.declaration.accepted} onChange={(e) => updateSection("declaration", "accepted", e.target.checked)} /><span>I agree to the Supply NOW Terms of Service and Raw Material Quality Standards.</span></label></Card>
       <PageActions back={back} nextLabel="Submit application" next={onSubmit} disabled={pending.length > 0 || !data.declaration.accepted || !data.declaration.fullName} />
     </>
   );
@@ -97,7 +113,7 @@ function PageActions({ back, next, nextLabel = "Save and continue", disabled = f
 }
 
 export default function App() {
-  const [started, setStarted] = useState(() => sessionStorage.getItem("nourishco-started") === "true");
+  const [started, setStarted] = useState(() => sessionStorage.getItem("supply-now-started") === "true");
   const [activeStep, setActiveStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [data, setData] = useState(() => {
@@ -108,7 +124,7 @@ export default function App() {
   const updateSection = (section, key, value) => setData((current) => ({ ...current, [section]: { ...current[section], [key]: value } }));
   const goNext = () => setActiveStep((step) => Math.min(step + 1, steps.length - 1));
   const goBack = () => setActiveStep((step) => Math.max(step - 1, 0));
-  const start = () => { sessionStorage.setItem("nourishco-started", "true"); setStarted(true); };
+  const start = () => { sessionStorage.setItem("supply-now-started", "true"); setStarted(true); };
   if (!started) return <Welcome onStart={start} />;
   const pages = [<Documents data={data} setData={setData} next={goNext} />, <Business data={data} updateSection={updateSection} next={goNext} back={goBack} />, <Supply data={data} updateSection={updateSection} next={goNext} back={goBack} />, <Review data={data} updateSection={updateSection} back={goBack} onSubmit={() => setSubmitted(true)} submitted={submitted} />];
   return <WorkspaceShell steps={steps} activeStep={activeStep} onNavigate={setActiveStep} completion={completion}>{pages[activeStep]}</WorkspaceShell>;
