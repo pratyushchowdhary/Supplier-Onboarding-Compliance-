@@ -1,6 +1,6 @@
-# NourishCo Supplier Portal
+# Supply NOW Supplier Portal
 
-Supplier-side onboarding MVP for the NourishCo supplier, compliance, and procurement platform.
+Supplier-side onboarding MVP for the Supply NOW supplier, compliance, and procurement platform.
 
 ## Run locally
 

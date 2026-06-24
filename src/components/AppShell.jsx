@@ -3,7 +3,7 @@ import { Button } from "./UI.jsx";
 function Brand() {
   return (
     <div className="brand">
-      <span><strong>NourishCo&apos;s Partners</strong><small>Supplier onboarding</small></span>
+      <span><strong>Supply NOW Partners</strong><small>Supplier onboarding</small></span>
     </div>
   );
 }
@@ -16,7 +16,7 @@ export function PublicShell({ children }) {
         <div className="public-header__actions"><Button variant="quiet">Help</Button><button className="icon-button" aria-label="Notifications">●</button><button className="icon-button" aria-label="Account">◉</button></div>
       </header>
       <main>{children}</main>
-      <footer className="footer"><span>© 2026 NourishCo</span><nav><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="#support">Contact support</a></nav></footer>
+      <footer className="footer"><span>© 2026 Supply NOW</span><nav><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="#support">Contact support</a></nav></footer>
     </div>
   );
 }
@@ -56,7 +56,7 @@ export function WorkspaceShell({ children, steps, activeStep, onNavigate, comple
       </aside>
       <div className="workspace-main">
         <main className="workspace-content">{children}</main>
-        <footer className="footer footer--workspace"><span>© 2026 NourishCo</span><nav><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="#support">Support</a></nav></footer>
+        <footer className="footer footer--workspace"><span>© 2026 Supply NOW</span><nav><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="#support">Support</a></nav></footer>
       </div>
       </div>
     </div>
